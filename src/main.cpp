@@ -33,14 +33,22 @@ void setup(void) {
     //Serial.println(WiFi.localIP()); WiFi.softAPIP();
     Serial.print("My IP address: ");
     Serial.println(myIP);
-    
+  
+    String mIP=String(myIP[0])+String(".");
+    mIP=mIP+String(myIP[1])+String(".");
+    mIP=mIP+String(myIP[2])+String(".");
+    mIP=mIP+String(myIP[3]);
+
     initWebServer();
 
-  display.drawString(1, 1, String(millis()%10000));
-  display.drawString(1, 25, String(millis()%10000));
-  display.setTextAlignment(TEXT_ALIGN_RIGHT);
-  display.drawString(128, 1, String(millis()%10000));
-  display.drawString(128, 25, String(millis()%10000)); 
+  display.drawString(1, 1, mIP);
+  display.drawString(1, 18, "Client");
+  display.drawString(1, 30, "Client");
+  display.drawString(1, 42, "Client");
+  display.drawString(1, 54, "Client");
+  //display.setTextAlignment(TEXT_ALIGN_RIGHT);
+  //display.drawString(128, 1, String(millis()%10000));
+  //display.drawString(128, 25, String(millis()%10000)); 
    
 
     Serial.println("Ready! Open http://192.168.1.233 in your browser");
@@ -52,5 +60,5 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
   display.display(); 
-  delay(1);
+  delay(100);
 }
