@@ -8,13 +8,20 @@
 #include <Update.h>
 #include "SettingsWiFi.h"
 #include "MyWebServer.h"
+//#include "SSD1306.h"
+#include "SettingsOled.h"
 
 
 void setup(void) {
   Serial.begin(9600);
   Serial.println();
   Serial.println("Booting Sketch...");
+  initOled();
+
   
+
+
+
   //WiFi.softAP(ssid, password);
   WiFi.mode(WIFI_AP_STA);
 
@@ -29,6 +36,11 @@ void setup(void) {
     
     initWebServer();
 
+  display.drawString(1, 1, String(millis()%10000));
+  display.drawString(1, 25, String(millis()%10000));
+  display.setTextAlignment(TEXT_ALIGN_RIGHT);
+  display.drawString(128, 1, String(millis()%10000));
+  display.drawString(128, 25, String(millis()%10000)); 
    
 
     Serial.println("Ready! Open http://192.168.1.233 in your browser");
@@ -39,5 +51,6 @@ void setup(void) {
 
 void loop(void) {
   server.handleClient();
+  display.display(); 
   delay(1);
 }
