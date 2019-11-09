@@ -14,14 +14,17 @@ void setup(void) {
   Serial.begin(9600);
   Serial.println();
   Serial.println("Booting Sketch...");
+  
+  //WiFi.softAP(ssid, password);
   WiFi.mode(WIFI_AP_STA);
+
   WiFi.config(ip, gateway, subnet);
   WiFi.begin(ssid, password);
   if (WiFi.waitForConnectResult() == WL_CONNECTED) {
-    //MDNS.begin(host);
     Serial.println();
-    IPAddress myIP = WiFi.softAPIP();
-    Serial.print("AP IP address: ");
+    IPAddress myIP = WiFi.localIP();
+    //Serial.println(WiFi.localIP()); WiFi.softAPIP();
+    Serial.print("My IP address: ");
     Serial.println(myIP);
     
     initWebServer();
