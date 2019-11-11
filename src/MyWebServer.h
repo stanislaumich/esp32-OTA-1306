@@ -1,20 +1,23 @@
 
 #include <WebServer.h>
 #include <Update.h>
-
+#include "SPIFFS.h"
 
 WebServer server(80);
+File fsUploadFile;
 const char* serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
 //////////////////////////////////////////////
 
 void FS_init(void){ 
   SPIFFS.begin();
+  /*
   {
     Dir dir = SPIFFS.openDir("/");
     while (dir.next()) {
       String fileName = dir.fileName();
       size_t fileSize = dir.fileSize();
     }
+    */
   }
 
 String getContentType(String filename) {
@@ -96,7 +99,7 @@ void handleFileCreate() {
   
  }
 void handleFileList() {
-  
+  /*
   if (!server.hasArg("dir")) {
     server.send(500, "text/plain", "BAD ARGS");
     return;
@@ -118,22 +121,38 @@ void handleFileList() {
   }
   output += "]";
   
- server.send(200, "text/json", output);
+ server.send(200, "text/json", output);*/
  }
 
 
 /////////////////////////////////////////////
 void initWebServer(void){
-    server.on("/", HTTP_GET, []() {
+    /*server.on("/", HTTP_GET, []() {
       server.sendHeader("Connection", "close");
       server.send(200, "text/html", serverIndex);
      });
-
+*/
     // my test1
     server.on("/list", HTTP_GET, handleFileList);
     server.on("/test", HTTP_GET, []() {
-      server.sendHeader("Connection", "close");
-      server.send(200, "text/html", "TEST");
+    //загрузка редактора editor
+  server.on("/edit", HTTP_GET, []() {
+    if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
+  });
+  //Создание файла
+  server.on("/edit", HTTP_PUT, handleFileCreate);
+  //Удаление файла
+  server.on("/edit", HTTP_DELETE, handleFileDelete);
+  //first callback is called after the request has ended with all parsed arguments
+  //second callback handles file uploads at that location
+  server.on("/edit", HTTP_POST, []() {
+    server.send(200, "text/plain", "");
+  }, handleFileUpload);
+
+
+      if (handleFileRead("index.htm")){
+      server.sendHeader("Connection", "close");  
+      server.send(200, "text/html", "TEST");}
      });
 
     server.on("/update", HTTP_POST, []() {
@@ -162,6 +181,13 @@ void initWebServer(void){
       } else {
         Serial.printf("Update Failed Unexpectedly (likely broken connection): status=%d\n", upload.status);
       }
+    });
+    server.onNotFound([]() {
+    if (!handleFileRead(server.uri()))
+      server.send(404, "text/plain", "FileNotFound");
+      Serial.write("Not Found: ");
+      String s=server.uri();
+      Serial.write(s.c_str());
     });
     server.begin();
 
