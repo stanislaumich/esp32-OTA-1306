@@ -1,16 +1,20 @@
-#include <Arduino.h>
-/*
-  To upload through terminal you can use: curl -F "image=@firmware.bin" esp8266-webupdate.local/update
-*/
+#include <Arduino.h>/*To upload through terminal you can use: curl -F "image=@firmware.bin" esp8266-webupdate.local/update*/
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
 #include <Update.h>
 #include "SettingsWiFi.h"
 #include "MyWebServer.h"
-//#include "SSD1306.h"
 #include "SettingsOled.h"
+#include <FS.h>
+#include <EEPROM.h>
+///
 
+
+///
+
+// Для файловой системы
+File fsUploadFile;
 
 void setup(void) {
   Serial.begin(9600);

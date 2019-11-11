@@ -6,6 +6,7 @@
 WebServer server(80);
 const char* serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
 //////////////////////////////////////////////
+
 void FS_init(void){ 
   SPIFFS.begin();
   {
@@ -31,7 +32,7 @@ String getContentType(String filename) {
   else if (filename.endsWith(".zip")) return "application/x-zip";
   else if (filename.endsWith(".gz")) return "application/x-gzip";
   return "text/plain";
-
+ }
 bool handleFileRead(String path) {
   
   if (path.endsWith("/")) path += "index.htm";
@@ -46,7 +47,7 @@ bool handleFileRead(String path) {
     return true;
   }
   return false;
-}
+ }
 
 void handleFileUpload() {
   if (server.uri() != "/edit") return;
@@ -64,7 +65,7 @@ void handleFileUpload() {
     if (fsUploadFile)
       fsUploadFile.close();
   }
-}
+ }
 
 void handleFileDelete() {
   if (server.args() == 0) return server.send(500, "text/plain", "BAD ARGS");
@@ -76,7 +77,7 @@ void handleFileDelete() {
   SPIFFS.remove(path);
   server.send(200, "text/plain", "");
   path = String();
-}
+ }
 void handleFileCreate() {
   if (server.args() == 0)
     return server.send(500, "text/plain", "BAD ARGS");
@@ -93,7 +94,7 @@ void handleFileCreate() {
  server.send(200, "text/plain", "");
   path = String();
   
-}
+ }
 void handleFileList() {
   
   if (!server.hasArg("dir")) {
@@ -118,7 +119,7 @@ void handleFileList() {
   output += "]";
   
  server.send(200, "text/json", output);
-}
+ }
 
 
 /////////////////////////////////////////////
