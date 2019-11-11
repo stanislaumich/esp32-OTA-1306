@@ -8,20 +8,22 @@
 #include "SettingsOled.h"
 #include <FS.h>
 #include <EEPROM.h>
+
 ///
 
 
 ///
 
 // Для файловой системы
-File fsUploadFile;
+//File fsUploadFile;
 
 void setup(void) {
+
   Serial.begin(9600);
   Serial.println();
   Serial.println("Booting Sketch...");
   initOled();
-
+  FS_init();
   
 
 
@@ -64,5 +66,5 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
   display.display(); 
-  delay(100);
+  delay(1);
 }
