@@ -25,7 +25,11 @@ WiFiUDP udp;
 void DisplayTime(void) {
   uint16_t m = ( ntp_time / 60 ) % 60;
   uint16_t h = ( ntp_time / 3600 ) % 24;
-  if (EEPROM.read(0) == h && EEPROM.read(1) == m ) {
+  int th;
+  int tm;
+  EEPROM.get(0,th);
+  EEPROM.get(2,tm);
+  if (th == h && tm == m ) {
     //Reley(6);
   }
   gh=h;
