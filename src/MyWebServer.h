@@ -2,6 +2,7 @@
 #include <WebServer.h>
 #include <Update.h>
 #include "SPIFFS.h"
+#include "SettingsOled.h"
 
 WebServer server(80);
 File fsUploadFile;
@@ -10,6 +11,7 @@ const char* serverIndex = "<form method='POST' action='/update' enctype='multipa
 
 void FS_init(void){ 
   SPIFFS.begin();
+  addds("SPIFFS.begin()");
   /*
   {
     Dir dir = SPIFFS.openDir("/");
@@ -98,8 +100,10 @@ void handleFileCreate() {
   path = String();
   
  }
+
+/* 
 void handleFileList() {
-  /*
+  
   if (!server.hasArg("dir")) {
     server.send(500, "text/plain", "BAD ARGS");
     return;
@@ -121,12 +125,50 @@ void handleFileList() {
   }
   output += "]";
   
- server.send(200, "text/json", output);*/
+ server.send(200, "text/json", output);
  }
+ */
+void handleFileList() {
+  addds("File list");
+  String dirname ="\/";
+  //int levels = 2;
+  String output = "[";
+  output +="Listing directory: "+ dirname;
+  output +="\r\n ";
+    File root = SPIFFS.open(dirname);
+    if(!root){
+        output +="- failed to open directory";
+        return;
+    }
+    if(!root.isDirectory()){
+        output +=" - not a directory";
+        return;
+    }
 
+    File file = root.openNextFile();
+    while(file){
+        if(file.isDirectory()){
+            output +="  DIR : ";
+            output +=file.name();
+            /*if(levels){
+                listDir(SPIFFS, file.name(), levels -1);
+            }*/
+        } else {
+            output +="  FILE: ";
+            output +=file.name();
+            output +="\tSIZE: ";
+            output +=file.size();
+            output +="\r\n ";
+        }
+        file = root.openNextFile();
+    }
+  output += "]";  
+ server.send(200, "text/json", output);  
+}
 
 /////////////////////////////////////////////
 void initWebServer(void){
+  addds("initWebServer");
     /*server.on("/", HTTP_GET, []() {
       server.sendHeader("Connection", "close");
       server.send(200, "text/html", serverIndex);
@@ -156,6 +198,8 @@ void initWebServer(void){
      });
 
     server.on("/update", HTTP_POST, []() {
+      fStr="UPDATING.....";
+      wrds();
       server.sendHeader("Connection", "close");
       server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
       ESP.restart();
@@ -190,5 +234,5 @@ void initWebServer(void){
       Serial.write(s.c_str());
     });
     server.begin();
-
+    addds("begin WebServer");
 }
