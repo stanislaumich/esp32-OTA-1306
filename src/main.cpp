@@ -6,7 +6,9 @@
 #include <Update.h>
 #include "SettingsWiFi.h"
 #include "MyWebServer.h"
+#ifndef MyTime
 #include "MyTime.h"
+#endif
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
@@ -26,7 +28,7 @@ void setup(void) {
   Serial.println("Booting Sketch...");  
   //WiFi.softAP(ssid, password);
   WiFi.mode(WIFI_AP_STA);
-  WiFi.config(ip, gateway, subnet);
+  WiFi.config(ip, gateway, subnet, dns1, dns2);
   WiFi.begin(ssid, password);
   addds("Connecting");
   if (WiFi.waitForConnectResult() == WL_CONNECTED) {
@@ -50,6 +52,7 @@ void setup(void) {
  }
 
 void loop(void) {
+  
   server.handleClient();
   curm=millis();
   if (curm-prevm>interval){
@@ -59,6 +62,9 @@ void loop(void) {
   }
   delay(1);
   clok();
+  if(prevh<h){
+    
+  }
   //addds(cstr);
   //wrds(); 
 }

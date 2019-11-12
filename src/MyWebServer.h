@@ -155,10 +155,11 @@ String millis2time(){
   return Time;
  }
 
+
 String alert_h(){
   String Time ="";
   byte m,h;
-  h= EEPROM.read(0);
+  h = EEPROM.read(0);
   m = EEPROM.read(1);
   Time+= (String)h+":";
   Time+= (String)m; 
@@ -173,7 +174,8 @@ String XmlTime(void) {
    Time+= (String)m; 
    return Time;
  }
-void handle_Time() {
+ 
+ void handle_Time() {
   int h = server.arg("h").toInt();
   int m = server.arg("m").toInt();
   EEPROM.write(0, h);
@@ -203,11 +205,14 @@ void initWebServer(void){
   addds("initWebServer");
   server.on("/xml",handleXML);
   server.on("/list", HTTP_GET, handleFileList);
+  server.on("/Time", HTTP_GET, handle_Time);
+  /*
   server.on("/test", HTTP_GET, []() {
   //загрузка редактора editor
   server.on("/edit", HTTP_GET, []() {
     if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
   });
+  */
   //Создание файла
   server.on("/edit", HTTP_PUT, handleFileCreate);
   //Удаление файла
@@ -223,9 +228,7 @@ void initWebServer(void){
       server.send(404, "text/plain", "FileNotFound");      
   });
   
-    server.on("/update", HTTP_POST, []() {
-      fStr="UPDATING.....";
-      wrds();
+    server.on("/update", HTTP_POST, []() {      
       server.sendHeader("Connection", "close");
       server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
       ESP.restart();
@@ -234,6 +237,10 @@ void initWebServer(void){
       if (upload.status == UPLOAD_FILE_START) {
         Serial.setDebugOutput(true);
         Serial.printf("Update: %s\n", upload.filename.c_str());
+        fStr="UPDATING.....";
+        addds(upload.filename.c_str());
+        
+        wrds();
         if (!Update.begin()) { //start with max available size
           Update.printError(Serial);
         }
@@ -252,7 +259,7 @@ void initWebServer(void){
         Serial.printf("Update Failed Unexpectedly (likely broken connection): status=%d\n", upload.status);
       }
     });
-    server.on("/Time", handle_Time);
+    
     /*
     server.onNotFound([]() {
     if (!handleFileRead(server.uri()))

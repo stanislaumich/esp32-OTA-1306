@@ -1,6 +1,6 @@
-#include <WiFiClient.h>
-//#include <EEPROM.h>
-unsigned int  localPort = 2390;  
+#include "WiFiClient.h"
+#define MyTime
+unsigned long localPort = 2390;  
 unsigned long ntp_time = 0;
 long  t_correct        = 0;
 unsigned long cur_ms   = 0;
@@ -9,7 +9,7 @@ unsigned long ms2      = 10000000UL;
 unsigned long t_cur    = 0;
 bool          points   = true;
 unsigned int err_count = 0;
-#define TIMEZONE 8
+#define TIMEZONE 3
 
 IPAddress timeServerIP; 
 const char* ntpServerName = "time.nist.gov";
@@ -23,9 +23,9 @@ WiFiUDP udp;
 void DisplayTime(void) {
   uint16_t m = ( ntp_time / 60 ) % 60;
   uint16_t h = ( ntp_time / 3600 ) % 24;
-  /*if (EEPROM.read(0) == h && EEPROM.read(1) == m ) {
+  if (EEPROM.read(0) == h && EEPROM.read(1) == m ) {
     //Reley(6);
-  }*/
+  }
   Serial.print(h);
   Serial.print(":");
   Serial.println(m);
@@ -49,7 +49,7 @@ unsigned long sendNTPpacket(IPAddress& address) {
   // Посылаем запрос на NTP сервер (123 порт)
   udp.beginPacket(address, 123);
   udp.write(packetBuffer, NTP_PACKET_SIZE);
-  udp.endPacket();
+  udp.endPacket();  
  }
 
 
