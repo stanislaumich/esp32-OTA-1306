@@ -3,23 +3,18 @@
 #include <Update.h>
 #include "SPIFFS.h"
 #include "SettingsOled.h"
+#include <EEPROM.h>
+#include "MyTime.h"
 
 WebServer server(80);
 File fsUploadFile;
+String XML;
 const char* serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
 //////////////////////////////////////////////
 
 void FS_init(void){ 
   SPIFFS.begin();
-  addds("SPIFFS.begin()");
-  /*
-  {
-    Dir dir = SPIFFS.openDir("/");
-    while (dir.next()) {
-      String fileName = dir.fileName();
-      size_t fileSize = dir.fileSize();
-    }
-    */
+  addds("SPIFFS.begin()");  
   }
 
 String getContentType(String filename) {
@@ -38,6 +33,8 @@ String getContentType(String filename) {
   else if (filename.endsWith(".gz")) return "application/x-gzip";
   return "text/plain";
  }
+
+
 bool handleFileRead(String path) {
   
   if (path.endsWith("/")) path += "index.htm";
@@ -101,33 +98,7 @@ void handleFileCreate() {
   
  }
 
-/* 
-void handleFileList() {
-  
-  if (!server.hasArg("dir")) {
-    server.send(500, "text/plain", "BAD ARGS");
-    return;
-  }
-  String path = server.arg("dir");
-  Dir dir = SPIFFS.openDir(path);
-  path = String();
-  String output = "[";
-  while (dir.next()) {
-    File entry = dir.openFile("r");
-    if (output != "[") output += ',';
-    bool isDir = false;
-    output += "{\"type\":\"";
-    output += (isDir) ? "dir" : "file";
-    output += "\",\"name\":\"";
-    output += String(entry.name()).substring(1);
-    output += "\"}";
-    entry.close();
-  }
-  output += "]";
-  
- server.send(200, "text/json", output);
- }
- */
+
 void handleFileList() {
   addds("File list");
   String dirname ="\/";
@@ -164,20 +135,76 @@ void handleFileList() {
     }
   output += "]";  
  server.send(200, "text/json", output);  
+ }
+
+
+String millis2time(){
+  String Time="";
+  unsigned long ss;
+  byte mm,hh;
+  ss=millis()/1000;
+  hh=ss/3600;
+  mm=(ss-hh*3600)/60;
+  ss=(ss-hh*3600)-mm*60;
+  if(hh<10)Time+="0";
+  Time+=(String)hh+":";
+  if(mm<10)Time+="0";
+  Time+=(String)mm+":";
+  if(ss<10)Time+="0";
+  Time+=(String)ss;
+  return Time;
+ }
+
+String alert_h(){
+  String Time ="";
+  byte m,h;
+  h= EEPROM.read(0);
+  m = EEPROM.read(1);
+  Time+= (String)h+":";
+  Time+= (String)m; 
+  return Time;
+  }
+
+String XmlTime(void) {
+   String Time ="";
+   uint16_t m = ( ntp_time / 60 ) % 60;
+   uint16_t h = ( ntp_time / 3600 ) % 24;
+   Time+= (String)h+":";
+   Time+= (String)m; 
+   return Time;
+ }
+void handle_Time() {
+  int h = server.arg("h").toInt();
+  int m = server.arg("m").toInt();
+  EEPROM.write(0, h);
+  EEPROM.write(1, m);
+  EEPROM.commit();
 }
 
-/////////////////////////////////////////////
+void buildXML(){
+  XML="<?xml version='1.0'?>";
+  XML+="<Donnees>"; 
+    XML+="<response>";
+    XML+=millis2time();
+    XML+="</response>";
+    XML+="<alert_time>";
+    XML+=alert_h();
+    XML+="</alert_time>";
+    XML+="<time>";
+    XML+=XmlTime();
+    XML+="</time>";
+  XML+="</Donnees>"; 
+}
+void handleXML(){
+  buildXML();
+  server.send(200,"text/xml",XML);
+}
 void initWebServer(void){
   addds("initWebServer");
-    /*server.on("/", HTTP_GET, []() {
-      server.sendHeader("Connection", "close");
-      server.send(200, "text/html", serverIndex);
-     });
-*/
-    // my test1
-    server.on("/list", HTTP_GET, handleFileList);
-    server.on("/test", HTTP_GET, []() {
-    //загрузка редактора editor
+  server.on("/xml",handleXML);
+  server.on("/list", HTTP_GET, handleFileList);
+  server.on("/test", HTTP_GET, []() {
+  //загрузка редактора editor
   server.on("/edit", HTTP_GET, []() {
     if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
   });
@@ -191,12 +218,11 @@ void initWebServer(void){
     server.send(200, "text/plain", "");
   }, handleFileUpload);
 
-
-      if (handleFileRead("index.htm")){
-      server.sendHeader("Connection", "close");  
-      server.send(200, "text/html", "TEST");}
-     });
-
+   server.onNotFound([]() {
+    if (!handleFileRead(server.uri()))
+      server.send(404, "text/plain", "FileNotFound");      
+  });
+  
     server.on("/update", HTTP_POST, []() {
       fStr="UPDATING.....";
       wrds();
@@ -226,13 +252,15 @@ void initWebServer(void){
         Serial.printf("Update Failed Unexpectedly (likely broken connection): status=%d\n", upload.status);
       }
     });
+    server.on("/Time", handle_Time);
+    /*
     server.onNotFound([]() {
     if (!handleFileRead(server.uri()))
       server.send(404, "text/plain", "FileNotFound");
       Serial.write("Not Found: ");
       String s=server.uri();
       Serial.write(s.c_str());
-    });
+    });*/
     server.begin();
     addds("begin WebServer");
-}
+ }

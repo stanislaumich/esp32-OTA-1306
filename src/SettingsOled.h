@@ -1,6 +1,5 @@
 #include "SSD1306.h"
 #define SettingsOled
-// Pin definitions for I2C
 #define OLED_SDA    5  // pin 14
 #define OLED_SDC    4  // pin 12
 #define OLED_ADDR   0x3C
