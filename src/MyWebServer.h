@@ -163,7 +163,7 @@ String alert_h(){
   EEPROM.get(sizeof(h),m);
   Time+= (String)h+":";
   Time+= (String)m; 
-  return Time;
+  return Time;//nen
   }
 
 String XmlTime(void) {
@@ -202,6 +202,8 @@ void buildXML(){
     XML+="</response>";
     XML+="<alert_time>";
     XML+=alert_h();
+    String z=alert_h();
+    //Serial.write(z.c_str());
     XML+="</alert_time>";
     XML+="<time>";
     XML+=XmlTime();

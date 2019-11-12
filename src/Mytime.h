@@ -34,9 +34,6 @@ void DisplayTime(void) {
   }
   gh=h;
   gm=m;
-  //Serial.print(h);
-  //Serial.print(":");
-  //Serial.println(m);
  }
 
 
