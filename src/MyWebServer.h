@@ -181,6 +181,7 @@ String XmlTime(void) {
   EEPROM.write(0, h);
   EEPROM.write(1, m);
   EEPROM.commit();
+  Serial.write("Write alert");
 }
 
 void buildXML(){
@@ -239,7 +240,9 @@ void initWebServer(void){
         Serial.printf("Update: %s\n", upload.filename.c_str());
         fStr="UPDATING.....";
         addds(upload.filename.c_str());
-        
+        addds("upload.filename.c_str()");
+        addds(upload.filename.c_str());
+        addds(upload.filename.c_str());
         wrds();
         if (!Update.begin()) { //start with max available size
           Update.printError(Serial);

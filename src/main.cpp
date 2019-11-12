@@ -62,9 +62,9 @@ void loop(void) {
   }
   delay(1);
   clok();
-  if(prevh<h){
-    
-  }
+  //if(prevh<gh){
+
+  //}
   //addds(cstr);
   //wrds(); 
 }

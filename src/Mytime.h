@@ -9,6 +9,8 @@ unsigned long ms2      = 10000000UL;
 unsigned long t_cur    = 0;
 bool          points   = true;
 unsigned int err_count = 0;
+int gh;
+int gm;
 #define TIMEZONE 3
 
 IPAddress timeServerIP; 
@@ -26,9 +28,11 @@ void DisplayTime(void) {
   if (EEPROM.read(0) == h && EEPROM.read(1) == m ) {
     //Reley(6);
   }
-  Serial.print(h);
-  Serial.print(":");
-  Serial.println(m);
+  gh=h;
+  gm=m;
+  //Serial.print(h);
+  //Serial.print(":");
+  //Serial.println(m);
  }
 
 
