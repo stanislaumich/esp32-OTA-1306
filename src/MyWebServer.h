@@ -158,9 +158,9 @@ String millis2time(){
 
 String alert_h(){
   String Time ="";
-  byte m,h;
+  int m,h;
   EEPROM.get(0,h);
-  EEPROM.get(2,m);
+  EEPROM.get(sizeof(h),m);
   Time+= (String)h+":";
   Time+= (String)m; 
   return Time;
@@ -183,11 +183,11 @@ String XmlTime(void) {
   Time+= (String)m; 
   Serial.write(Time.c_str());
   EEPROM.put(0, h);
-  EEPROM.put(2, m);
+  EEPROM.put(sizeof(h), m);
   EEPROM.commit();
   Serial.write("Write alert");
   EEPROM.get(0,h);
-  EEPROM.get(2,m);
+  EEPROM.get(sizeof(h),m);
   Time="";
   Time+= (String)h+":";
   Time+= (String)m; 

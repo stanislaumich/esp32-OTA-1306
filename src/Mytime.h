@@ -28,7 +28,7 @@ void DisplayTime(void) {
   int th;
   int tm;
   EEPROM.get(0,th);
-  EEPROM.get(2,tm);
+  EEPROM.get(sizeof(th),tm);
   if (th == h && tm == m ) {
     //Reley(6);
   }
