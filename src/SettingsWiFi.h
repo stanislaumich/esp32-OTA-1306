@@ -2,11 +2,11 @@
 #include <WiFiClient.h>
 
 const char* host = "esp32-webupdate";
-const char* ssid = "SAN";
-const char* password = "37212628";
+//const char* ssid = "SAN";
+//const char* password = "37212628";
 
-//const char* ssid = "ZTE54";
-//const char* password = "121211119";
+const char* ssid = "ZTE54";
+const char* password = "121211119";
 
 IPAddress ip(192,168,1,233);  //Node static IP
 IPAddress gateway(192,168,1,1);

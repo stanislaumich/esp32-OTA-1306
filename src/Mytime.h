@@ -1,5 +1,9 @@
 #include "WiFiClient.h"
 #define MyTime
+
+#include <Preferences.h>
+
+
 unsigned long localPort = 2390;  
 unsigned long ntp_time = 0;
 long  t_correct        = 0;
@@ -13,6 +17,7 @@ int gh;
 int gm;
 #define TIMEZONE 3
 
+Preferences prefs;
 IPAddress timeServerIP; 
 const char* ntpServerName = "time.nist.gov";
 
@@ -27,8 +32,11 @@ void DisplayTime(void) {
   uint16_t h = ( ntp_time / 3600 ) % 24;
   int th;
   int tm;
-  EEPROM.get(0,th);
-  EEPROM.get(sizeof(th),tm);
+  
+  size_t q1 = prefs.getInt("alarm_h", th);
+  size_t q2 = prefs.getInt("alarm_m", tm);
+  //EEPROM.get(0,th);
+  //EEPROM.get(sizeof(th),tm);
   if (th == h && tm == m ) {
     //Reley(6);
   }

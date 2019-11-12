@@ -13,7 +13,7 @@
  #include "SettingsOled.h"
 #endif
 #include <FS.h>
-#include <EEPROM.h>
+//#include <EEPROM.h>
 
 unsigned long int prevm;
 unsigned long int curm;

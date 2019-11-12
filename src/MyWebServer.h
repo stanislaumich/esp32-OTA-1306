@@ -3,8 +3,9 @@
 #include <Update.h>
 #include "SPIFFS.h"
 #include "SettingsOled.h"
-#include <EEPROM.h>
+//#include <EEPROM.h>
 #include "MyTime.h"
+
 
 WebServer server(80);
 File fsUploadFile;
@@ -14,7 +15,10 @@ const char* serverIndex = "<form method='POST' action='/update' enctype='multipa
 
 void FS_init(void){ 
   SPIFFS.begin();
-  addds("SPIFFS.begin()");  
+  addds("SPIFFS.begin()");
+  prefs.begin("alarm_h",false);
+  prefs.begin("alarm_m",false);
+   
   }
 
 String getContentType(String filename) {
@@ -158,13 +162,18 @@ String millis2time(){
 
 String alert_h(){
   String Time ="";
-  int m,h;
-  EEPROM.get(0,h);
-  EEPROM.get(sizeof(h),m);
+  int m=0;
+  int h=0;
+  h = prefs.getInt("alarm_h", 0);
+  m = prefs.getInt("alarm_m",0);
+  //EEPROM.get(0,h);
+  //EEPROM.get(sizeof(h),m);
   Time+= (String)h+":";
   Time+= (String)m; 
   return Time;//nen
-  }
+  Serial.write("alert-");
+  Serial.write(Time.c_str());
+    }
 
 String XmlTime(void) {
    String Time ="";
@@ -182,12 +191,16 @@ String XmlTime(void) {
   Time+= (String)h+":";
   Time+= (String)m; 
   Serial.write(Time.c_str());
-  EEPROM.put(0, h);
-  EEPROM.put(sizeof(h), m);
-  EEPROM.commit();
+  size_t q1 = prefs.putInt("alarm_h", h);
+  size_t q2 = prefs.putInt("alarm_m", m);
+  //EEPROM.put(0, h);
+  //EEPROM.put(sizeof(h), m);
+  //EEPROM.commit();
   Serial.write("Write alert");
-  EEPROM.get(0,h);
-  EEPROM.get(sizeof(h),m);
+  h = prefs.getInt("alarm_h",0);
+  m = prefs.getInt("alarm_m", 0);
+  //EEPROM.get(0,h);
+  //EEPROM.get(sizeof(h),m);
   Time="";
   Time+= (String)h+":";
   Time+= (String)m; 
@@ -202,7 +215,7 @@ void buildXML(){
     XML+="</response>";
     XML+="<alert_time>";
     XML+=alert_h();
-    String z=alert_h();
+    //String z=alert_h();
     //Serial.write(z.c_str());
     XML+="</alert_time>";
     XML+="<time>";
