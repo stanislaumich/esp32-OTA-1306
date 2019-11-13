@@ -25,6 +25,8 @@
 
 unsigned long int prevm;
 unsigned long int curm;
+unsigned long int tm;
+
 int interval=1000;
 
 void setup(void) {
@@ -36,11 +38,29 @@ void setup(void) {
   Serial.println("Booting Sketch...");  
   WiFi.mode(WIFI_AP_STA);
   WiFi.config(ip, gateway, subnet, dns1, dns2);
-  WiFi.begin(ssid, password);
-  addds("Connecting");
-  addds(ssid);
-  if (WiFi.waitForConnectResult() == WL_CONNECTED) {
-    Serial.println();
+  WiFi.begin(ssid1, password1);
+  addds("Try connect...");
+  addds(ssid1);
+  tm=millis();
+  ////////////////////////////////
+  while ((WiFi.waitForConnectResult() != WL_CONNECTED) and (millis()<tm+ WiFiTimeout)){
+
+  }
+  
+
+  if (!WiFi.isConnected()){
+    tm=millis();
+    //WiFi.config(ip, gateway, subnet, dns1, dns2);
+    WiFi.begin(ssid2, password2);
+    addds("Try connect...");
+    addds(ssid2);
+    while ((WiFi.waitForConnectResult() != WL_CONNECTED) and (millis()<tm+ WiFiTimeout)){
+
+    } 
+   }
+///////////////////////////////
+
+   if (WiFi.isConnected()){
     IPAddress myIP = WiFi.localIP();    
     Serial.print("My IP address: ");
     Serial.println(myIP);  
@@ -48,15 +68,19 @@ void setup(void) {
     mIP=mIP+String(myIP[1])+String(".");
     mIP=mIP+String(myIP[2])+String(".");
     mIP=mIP+String(myIP[3]);
-    fStr=mIP;
+    fStr=mIP+" "+getSsidPass("SSID");
     initWebServer();
-    fStr=mIP;
     addds("Connected.");
     Serial.println("Ready! Open http://192.168.1.233 in your browser");
-  } else {addds("WiFi Failed");}
-   addds("Starting UDP");
-   udp.begin(localPort);
-   addds("UDP started.");
+    addds("Starting UDP");
+    udp.begin(localPort);
+    addds("UDP started.");
+   }
+   else{
+     clrscr();
+     fStr="ERROR";
+     addds("WiFi Failed.");
+   }
  }
 
 void loop(void) {  

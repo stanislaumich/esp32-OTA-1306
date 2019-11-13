@@ -1,7 +1,8 @@
 // http://oleddisplay.squix.ch/#/home
 #define SettingsOled
 #include "SSD1306.h"
-#include "font_orbitum_10.h" 
+// #include "font_orbitum_10.h"  // очень красиво
+#include "font_orbitum_10.h"
 #ifndef Common
  #include "common.h"
 #endif 

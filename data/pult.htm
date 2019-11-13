@@ -36,6 +36,18 @@ function handleServerResponse(){
    message = xmldoc[0].firstChild.nodeValue;
    document.getElementById('TIME').value=message;
    
+   xmldoc = xmlResponse.getElementsByTagName('b0');
+   message = xmldoc[0].firstChild.nodeValue;
+   document.getElementById('b0').value=message;
+   
+   xmldoc = xmlResponse.getElementsByTagName('b1');
+   message = xmldoc[0].firstChild.nodeValue;
+   document.getElementById('b1').value=message;
+
+   xmldoc = xmlResponse.getElementsByTagName('b2');
+   message = xmldoc[0].firstChild.nodeValue;
+   document.getElementById('b2').value=message;
+
   }
 }
 	
@@ -78,9 +90,9 @@ request.send();
                <input type="submit" name="state" value="5" onclick="sendbutton(5);"> 
                 <input type="submit" name="state" value="4" onclick="sendbutton(4);"> 
                 <input type="submit" name="state" value="3" onclick="sendbutton(3);"> -->
-                <input type="submit" name="state" value="2" onclick="sendbutton(2);"> 
-                <input type="submit" name="state" value="1" onclick="sendbutton(1);">  
-                <input type="submit" name="state" value="0" onclick="sendbutton(0);">
+                <input type="submit" name="state2" id="b2" value="0" onclick="sendbutton(2);"> 
+                <input type="submit" name="state1" id="b1" value="0" onclick="sendbutton(1);">  
+                <input type="submit" name="state0" id="b0" value="0" onclick="sendbutton(0);">
             </p>
        
             

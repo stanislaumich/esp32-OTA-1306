@@ -160,7 +160,9 @@ String millis2time(){
 
 void handle_Button() {
   int state = server.arg("state").toInt();
-  Button(state);  
+  Button(state);
+  server.sendHeader("Connection", "close");
+  server.send(200, "text/plain", "Ok");  
  }
 
 String alert_h(){
@@ -208,6 +210,15 @@ void buildXML(){
     XML+="<time>";
     XML+=XmlTime();
     XML+="</time>";
+    XML+="<b0>";
+    XML+=XMLb0;
+    XML+="</b0>";
+    XML+="<b1>";
+    XML+=XMLb1;
+    XML+="</b1>";
+    XML+="<b2>";
+    XML+=XMLb2;
+    XML+="</b2>";
   XML+="</Donnees>"; 
  }
 void handleXML(){
