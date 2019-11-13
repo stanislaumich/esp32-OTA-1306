@@ -3,9 +3,7 @@
 #include <Update.h>
 #include "SPIFFS.h"
 #include "SettingsOled.h"
-//#include <EEPROM.h>
 #include "MyTime.h"
-
 
 WebServer server(80);
 File fsUploadFile;
@@ -18,8 +16,7 @@ void FS_init(void){
   addds("SPIFFS.begin()");
   prefs.begin("alarm_h",false);
   prefs.begin("alarm_m",false);
-   
-  }
+ }
 
 String getContentType(String filename) {
   if (server.hasArg("download")) return "application/octet-stream";
@@ -39,8 +36,7 @@ String getContentType(String filename) {
  }
 
 
-bool handleFileRead(String path) {
-  
+bool handleFileRead(String path) {  
   if (path.endsWith("/")) path += "index.htm";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
@@ -98,8 +94,7 @@ void handleFileCreate() {
   else
     return server.send(500, "text/plain", "CREATE FAILED");
  server.send(200, "text/plain", "");
-  path = String();
-  
+  path = String();  
  }
 
 
@@ -119,7 +114,6 @@ void handleFileList() {
         output +=" - not a directory";
         return;
     }
-
     File file = root.openNextFile();
     while(file){
         if(file.isDirectory()){
@@ -166,14 +160,10 @@ String alert_h(){
   int h=0;
   h = prefs.getInt("alarm_h", 0);
   m = prefs.getInt("alarm_m",0);
-  //EEPROM.get(0,h);
-  //EEPROM.get(sizeof(h),m);
   Time+= (String)h+":";
   Time+= (String)m; 
-  return Time;//nen
-  Serial.write("alert-");
-  Serial.write(Time.c_str());
-    }
+  return Time;
+ }
 
 String XmlTime(void) {
    String Time ="";
@@ -182,7 +172,7 @@ String XmlTime(void) {
    Time+= (String)h+":";
    Time+= (String)m; 
    return Time;
- }
+  }
  
  void handle_Time() {
   int h = server.arg("h").toInt();
@@ -206,7 +196,6 @@ String XmlTime(void) {
   Time+= (String)m; 
   Serial.write(Time.c_str());
 }
-
 void buildXML(){
   XML="<?xml version='1.0'?>";
   XML+="<Donnees>"; 
@@ -222,23 +211,22 @@ void buildXML(){
     XML+=XmlTime();
     XML+="</time>";
   XML+="</Donnees>"; 
-}
+ }
 void handleXML(){
   buildXML();
   server.send(200,"text/xml",XML);
-}
+ }
+void handlereboot(){
+  String s="Rebooting, refresh page";
+  server.send(200,"text/html",s);
+  ESP.restart();
+ }
 void initWebServer(void){
   addds("initWebServer");
+  server.on("/reboot",handlereboot);
   server.on("/xml",handleXML);
   server.on("/list", HTTP_GET, handleFileList);
   server.on("/Time", HTTP_GET, handle_Time);
-  /*
-  server.on("/test", HTTP_GET, []() {
-  //загрузка редактора editor
-  server.on("/edit", HTTP_GET, []() {
-    if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
-  });
-  */
   //Создание файла
   server.on("/edit", HTTP_PUT, handleFileCreate);
   //Удаление файла
@@ -248,12 +236,12 @@ void initWebServer(void){
   server.on("/edit", HTTP_POST, []() {
     server.send(200, "text/plain", "");
   }, handleFileUpload);
-
+   /////////////////////
    server.onNotFound([]() {
     if (!handleFileRead(server.uri()))
       server.send(404, "text/plain", "FileNotFound");      
   });
-  
+  ///////////////////////
     server.on("/update", HTTP_POST, []() {      
       server.sendHeader("Connection", "close");
       server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
@@ -265,9 +253,9 @@ void initWebServer(void){
         Serial.printf("Update: %s\n", upload.filename.c_str());
         fStr="UPDATING.....";
         addds(upload.filename.c_str());
-        addds("upload.filename.c_str()");
-        addds(upload.filename.c_str());
-        addds(upload.filename.c_str());
+        addds("");
+        addds("");
+        addds("Wait....");
         wrds();
         if (!Update.begin()) { //start with max available size
           Update.printError(Serial);
@@ -287,15 +275,7 @@ void initWebServer(void){
         Serial.printf("Update Failed Unexpectedly (likely broken connection): status=%d\n", upload.status);
       }
     });
-    
-    /*
-    server.onNotFound([]() {
-    if (!handleFileRead(server.uri()))
-      server.send(404, "text/plain", "FileNotFound");
-      Serial.write("Not Found: ");
-      String s=server.uri();
-      Serial.write(s.c_str());
-    });*/
+
     server.begin();
     addds("begin WebServer");
  }

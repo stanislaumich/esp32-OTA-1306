@@ -31,6 +31,7 @@ void setup(void) {
   WiFi.config(ip, gateway, subnet, dns1, dns2);
   WiFi.begin(ssid, password);
   addds("Connecting");
+  addds(ssid);
   if (WiFi.waitForConnectResult() == WL_CONNECTED) {
     Serial.println();
     IPAddress myIP = WiFi.localIP();    
@@ -51,8 +52,7 @@ void setup(void) {
    addds("UDP started.");
  }
 
-void loop(void) {
-  
+void loop(void) {  
   server.handleClient();
   curm=millis();
   if (curm-prevm>interval){
@@ -62,9 +62,4 @@ void loop(void) {
   }
   delay(1);
   clok();
-  //if(prevh<gh){
-
-  //}
-  //addds(cstr);
-  //wrds(); 
 }

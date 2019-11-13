@@ -1,6 +1,5 @@
 #include "WiFiClient.h"
 #define MyTime
-
 #include <Preferences.h>
 
 
@@ -20,25 +19,21 @@ int gm;
 Preferences prefs;
 IPAddress timeServerIP; 
 const char* ntpServerName = "time.nist.gov";
-
 const int NTP_PACKET_SIZE = 48; 
 byte packetBuffer[NTP_PACKET_SIZE]; 
 WiFiUDP udp;
 
-  // Каждые 0.5 секунды выдаем время
 
+  // Каждые 0.5 секунды выдаем время
 void DisplayTime(void) {
   uint16_t m = ( ntp_time / 60 ) % 60;
   uint16_t h = ( ntp_time / 3600 ) % 24;
   int th;
   int tm;
-  
   size_t q1 = prefs.getInt("alarm_h", th);
   size_t q2 = prefs.getInt("alarm_m", tm);
-  //EEPROM.get(0,th);
-  //EEPROM.get(sizeof(th),tm);
   if (th == h && tm == m ) {
-    //Reley(6);
+    //сработал будильник - в течении целой минуты
   }
   gh=h;
   gm=m;
