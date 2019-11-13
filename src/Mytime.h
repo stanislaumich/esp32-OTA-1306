@@ -45,8 +45,10 @@ void DisplayTime(void) {
     if (m<10){Time+= "0"+(String)m;}else{Time+= (String)m;} 
     addds(Time);    
     }
+  if ((m==0)&&(gh!=h)){beep(150,125);}  
   gh=h;
   gm=m;
+  
  }
 
 

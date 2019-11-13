@@ -7,6 +7,18 @@ int XMLb0;
 int XMLb1;
 int XMLb2;
 
+void beep(int t1,int t2){
+ unsigned long h;
+  h=millis();
+  while (millis()-h<t1){
+  digitalWrite(0,HIGH);
+  delayMicroseconds(t2);
+  digitalWrite(0,LOW);
+  delayMicroseconds(t2);
+ }
+
+}
+
 void Button_init(){
   
   /*pinMode(rele1, OUTPUT);
