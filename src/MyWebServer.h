@@ -192,9 +192,9 @@ void handlebeep(void){
   h=millis();
   while (millis()-h<t1){
   digitalWrite(0,HIGH);
-  delay(t2);
+  delayMicroseconds(t2);
   digitalWrite(0,LOW);
-  delay(t2);
+  delayMicroseconds(t2);
  }
   server.sendHeader("Connection", "close");
   server.send(200, "text/plain", "Ok beep "); 

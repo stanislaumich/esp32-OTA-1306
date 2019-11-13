@@ -89,7 +89,7 @@ void setup(void) {
  digitalWrite(0,LOW);
  unsigned long h;
  h=millis();
- while (millis()-h<300){
+ while (millis()-h<200){
  digitalWrite(0,HIGH);
  delay(2);
  digitalWrite(0,LOW);
