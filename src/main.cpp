@@ -93,4 +93,7 @@ void loop(void) {
   }
   delay(1);
   clok();
+  if (millis()>screencur+screentimeout){
+   screenoff();
+  }
 }

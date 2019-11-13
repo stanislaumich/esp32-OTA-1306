@@ -32,7 +32,15 @@ SSD1306  display(0x3c, 5, 4);
 String ds[4];
 String mIP;
 String fStr;
+unsigned long screentimeout=10000;
+unsigned long screencur;
 
+void screenoff(void){
+  display.displayOff();
+ }
+void screenon(void){
+  display.displayOn();
+ } 
 void initOled(void){
   display.init();
   //display.flipScreenVertically();
@@ -40,17 +48,16 @@ void initOled(void){
   display.setFont(Orbitron_Medium_10);
   }
 
-
-
-void wrds(void)
-  {
+void wrds(void){
+   screenon();
    display.clear();  
    display.drawString(1, sfy, fStr);
    display.drawString(1, s0y, ds[0]);
    display.drawString(1, s1y, ds[1]);
    display.drawString(1, s2y, ds[2]);
    display.drawString(1, s3y, ds[3]);
-   display.display(); 
+   display.display();
+   screencur=millis(); 
   }
 void addds(String qq){
   ds[0]=ds[1];
@@ -65,4 +72,5 @@ void insds(int pos,String qq){
  } 
 void clrscr(void){
  display.clear();
- }    
+ } 
+   
