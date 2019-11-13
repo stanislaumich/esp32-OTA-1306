@@ -188,15 +188,16 @@ String XmlTime(void) {
 void handlebeep(void){
   int t1 = server.arg("t1").toInt();
   int t2 = server.arg("t2").toInt();
- unsigned long h;
- h=millis();
- while (millis()-h<t1){
- digitalWrite(0,HIGH);
- delay(t2);
- digitalWrite(0,LOW);
- delay(t2);
+  unsigned long h;
+  h=millis();
+  while (millis()-h<t1){
+  digitalWrite(0,HIGH);
+  delay(t2);
+  digitalWrite(0,LOW);
+  delay(t2);
  }
-
+  server.sendHeader("Connection", "close");
+  server.send(200, "text/plain", "Ok beep "); 
  }  
 void handle_Time() {
   int h = server.arg("h").toInt();
