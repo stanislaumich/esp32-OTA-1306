@@ -1,6 +1,9 @@
+#define SettingsWiFi
 #include <WiFi.h>
 #include <WiFiClient.h>
-
+#ifndef Common
+ #include "common.h"
+#endif 
 //const char* host = "esp32-webupdate";
 const char* ssid = "SAN";
 const char* password = "37212628";

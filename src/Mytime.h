@@ -1,7 +1,9 @@
-#include "WiFiClient.h"
 #define MyTime
+#include "WiFiClient.h"
 #include <Preferences.h>
-
+#ifndef Common
+ #include "common.h"
+#endif 
 
 unsigned long localPort = 2390;  
 unsigned long ntp_time = 0;
@@ -32,9 +34,17 @@ void DisplayTime(void) {
   int tm;
   size_t q1 = prefs.getInt("alarm_h", th);
   size_t q2 = prefs.getInt("alarm_m", tm);
+
   if (th == h && tm == m ) {
-    //сработал будильник - в течении целой минуты
+    addds("ALARMA!!!!");
+    Serial.write("ALARMA!!!!");
   }
+  if (gm!=m){
+    String Time ="";
+    if (h<10){Time+= "0"+(String)h+":";}else{Time+= (String)h+":";}
+    if (m<10){Time+= "0"+(String)m;}else{Time+= (String)m;} 
+    addds(Time);    
+    }
   gh=h;
   gm=m;
  }
@@ -42,19 +52,15 @@ void DisplayTime(void) {
 
 unsigned long sendNTPpacket(IPAddress& address) {
   Serial.println("sending NTP packet...");
-  // Очистка буфера в 0
   memset(packetBuffer, 0, NTP_PACKET_SIZE);
-  // Формируем строку зыпроса NTP сервера
   packetBuffer[0] = 0b11100011;   // LI, Version, Mode
   packetBuffer[1] = 0;     // Stratum, or type of clock
   packetBuffer[2] = 6;     // Polling Interval
   packetBuffer[3] = 0xEC;  // Peer Clock Precision
-  // 8 bytes of zero for Root Delay & Root Dispersion
   packetBuffer[12]  = 49;
   packetBuffer[13]  = 0x4E;
   packetBuffer[14]  = 49;
   packetBuffer[15]  = 52;
-  // Посылаем запрос на NTP сервер (123 порт)
   udp.beginPacket(address, 123);
   udp.write(packetBuffer, NTP_PACKET_SIZE);
   udp.endPacket();  

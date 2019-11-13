@@ -40,11 +40,10 @@ function handleServerResponse(){
 }
 	
 function sendbutton(Pin){
-server = "/Reley?state=" + Pin;
+server = "/Button?state=" + Pin;
 request = new XMLHttpRequest();
 request.open("GET", server, true);
 request.send();
-
 }
 function set_alert(){
 h = document.getElementById('ALERTH').value;
@@ -74,11 +73,16 @@ request.send();
     <tr>
         <td>
             
-            <p align="center">Люстра<br><input type="submit" name="state" value="6" onclick="sendbutton(6);"> 
-                <input type="submit" name="state" value="5" onclick="sendbutton(5);"> <input type="submit" name="state" value="4" onclick="sendbutton(4);"> 
-                <input type="submit" name="state" value="3" onclick="sendbutton(3);"> <input type="submit" name="state" value="2" onclick="sendbutton(2);"> 
-                <input type="submit" name="state" value="1" onclick="sendbutton(1);"> <input type="submit" name="state" value="0" onclick="sendbutton(0);"></p>
-            
+            <p align="center">Кнопки<br>
+              <!--   <input type="submit" name="state" value="6" onclick="sendbutton(6);"> 
+               <input type="submit" name="state" value="5" onclick="sendbutton(5);"> 
+                <input type="submit" name="state" value="4" onclick="sendbutton(4);"> 
+                <input type="submit" name="state" value="3" onclick="sendbutton(3);"> -->
+                <input type="submit" name="state" value="2" onclick="sendbutton(2);"> 
+                <input type="submit" name="state" value="1" onclick="sendbutton(1);">  
+                <input type="submit" name="state" value="0" onclick="sendbutton(0);">
+            </p>
+       
             
             <p align="left">Время: <input type="text" name="h" id="TIME" value="00" size="2"> <br>
             Время работы ESP: <input type="text" name="h" id="runtime" value="00" size="8"><br> 

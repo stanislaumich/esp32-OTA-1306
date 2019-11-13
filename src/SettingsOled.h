@@ -1,5 +1,8 @@
-#include "SSD1306.h"
 #define SettingsOled
+#include "SSD1306.h"
+#ifndef Common
+ #include "common.h"
+#endif 
 #define OLED_SDA    5  // pin 14
 #define OLED_SDC    4  // pin 12
 #define OLED_ADDR   0x3C
@@ -34,7 +37,10 @@ void addds(String qq){
   ds[3]=qq;
   wrds();
  }
- 
+void insds(int pos,String qq){
+  ds[pos]=qq;
+  wrds();
+ } 
 void clrscr(void){
  display.clear();
  }    

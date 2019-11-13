@@ -4,14 +4,22 @@
 #include <WiFiClient.h>
 #include <WebServer.h>
 #include <Update.h>
-#include "SettingsWiFi.h"
-#include "MyWebServer.h"
+#ifndef Common
+ #include "common.h"
+#endif
+#ifndef SettingsWiFi
+ #include "SettingsWiFi.h"
+#endif 
+#ifndef MyWebServer
+ #include "MyWebServer.h"
+#endif
 #ifndef MyTime
 #include "MyTime.h"
 #endif
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
+ 
 #include <FS.h>
 //#include <EEPROM.h>
 
@@ -26,7 +34,6 @@ void setup(void) {
   Serial.begin(115200);
   Serial.println();
   Serial.println("Booting Sketch...");  
-  //WiFi.softAP(ssid, password);
   WiFi.mode(WIFI_AP_STA);
   WiFi.config(ip, gateway, subnet, dns1, dns2);
   WiFi.begin(ssid, password);

@@ -1,10 +1,14 @@
-
+#define MyWebServer
 #include <WebServer.h>
 #include <Update.h>
 #include "SPIFFS.h"
-#include "SettingsOled.h"
+#ifndef SettingsOled
+ #include "SettingsOled.h"
+#endif
 #include "MyTime.h"
-
+#ifndef Common
+ #include "common.h"
+#endif 
 WebServer server(80);
 File fsUploadFile;
 String XML;
@@ -135,7 +139,6 @@ void handleFileList() {
  server.send(200, "text/json", output);  
  }
 
-
 String millis2time(){
   String Time="";
   unsigned long ss;
@@ -154,6 +157,12 @@ String millis2time(){
  }
 
 
+
+void handle_Button() {
+  int state = server.arg("state").toInt();
+  Button(state);  
+ }
+
 String alert_h(){
   String Time ="";
   int m=0;
@@ -166,36 +175,27 @@ String alert_h(){
  }
 
 String XmlTime(void) {
-   String Time ="";
-   uint16_t m = ( ntp_time / 60 ) % 60;
-   uint16_t h = ( ntp_time / 3600 ) % 24;
-   Time+= (String)h+":";
-   Time+= (String)m; 
-   return Time;
-  }
- 
- void handle_Time() {
+  String Time ="";
+  uint16_t m = ( ntp_time / 60 ) % 60;
+  uint16_t h = ( ntp_time / 3600 ) % 24;
+  Time+= (String)h+":";
+  Time+= (String)m; 
+  return Time;
+ } 
+void handle_Time() {
   int h = server.arg("h").toInt();
   int m = server.arg("m").toInt();
   String Time ="";
   Time+= (String)h+":";
   Time+= (String)m; 
-  Serial.write(Time.c_str());
   size_t q1 = prefs.putInt("alarm_h", h);
   size_t q2 = prefs.putInt("alarm_m", m);
-  //EEPROM.put(0, h);
-  //EEPROM.put(sizeof(h), m);
-  //EEPROM.commit();
-  Serial.write("Write alert");
   h = prefs.getInt("alarm_h",0);
   m = prefs.getInt("alarm_m", 0);
-  //EEPROM.get(0,h);
-  //EEPROM.get(sizeof(h),m);
   Time="";
   Time+= (String)h+":";
   Time+= (String)m; 
-  Serial.write(Time.c_str());
-}
+ }
 void buildXML(){
   XML="<?xml version='1.0'?>";
   XML+="<Donnees>"; 
@@ -204,8 +204,6 @@ void buildXML(){
     XML+="</response>";
     XML+="<alert_time>";
     XML+=alert_h();
-    //String z=alert_h();
-    //Serial.write(z.c_str());
     XML+="</alert_time>";
     XML+="<time>";
     XML+=XmlTime();
@@ -227,6 +225,7 @@ void initWebServer(void){
   server.on("/xml",handleXML);
   server.on("/list", HTTP_GET, handleFileList);
   server.on("/Time", HTTP_GET, handle_Time);
+  server.on("/Button", handle_Button);
   //Создание файла
   server.on("/edit", HTTP_PUT, handleFileCreate);
   //Удаление файла
@@ -256,7 +255,7 @@ void initWebServer(void){
         addds("");
         addds("");
         addds("Wait....");
-        wrds();
+        //wrds();
         if (!Update.begin()) { //start with max available size
           Update.printError(Serial);
         }
