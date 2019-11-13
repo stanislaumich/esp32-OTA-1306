@@ -81,6 +81,21 @@ void setup(void) {
      fStr="ERROR";
      addds("WiFi Failed.");
    }
+//0 +
+ //12 -
+ pinMode(0,OUTPUT);
+ pinMode(12,OUTPUT);
+ digitalWrite(12,LOW);
+ digitalWrite(0,LOW);
+ unsigned long h;
+ h=millis();
+ while (millis()-h<300){
+ digitalWrite(0,HIGH);
+ delay(2);
+ digitalWrite(0,LOW);
+ delay(2);
+ }
+
  }
 
 void loop(void) {  

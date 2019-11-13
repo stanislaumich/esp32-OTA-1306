@@ -183,7 +183,21 @@ String XmlTime(void) {
   Time+= (String)h+":";
   Time+= (String)m; 
   return Time;
- } 
+ }
+
+void handlebeep(void){
+  int t1 = server.arg("t1").toInt();
+  int t2 = server.arg("t2").toInt();
+ unsigned long h;
+ h=millis();
+ while (millis()-h<t1){
+ digitalWrite(0,HIGH);
+ delay(t2);
+ digitalWrite(0,LOW);
+ delay(t2);
+ }
+
+ }  
 void handle_Time() {
   int h = server.arg("h").toInt();
   int m = server.arg("m").toInt();
@@ -237,6 +251,7 @@ void initWebServer(void){
   server.on("/list", HTTP_GET, handleFileList);
   server.on("/Time", HTTP_GET, handle_Time);
   server.on("/Button", handle_Button);
+  server.on("/beep",handlebeep);
   //Создание файла
   server.on("/edit", HTTP_PUT, handleFileCreate);
   //Удаление файла
