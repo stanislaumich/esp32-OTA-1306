@@ -12,19 +12,19 @@
 #define font10
 
 #ifdef font10
-#define sfx 1
-#define s0x 18
-#define s1x 30
-#define s2x 42
-#define s3x 54
+#define sfy 1
+#define s0y 18
+#define s1y 30
+#define s2y 42
+#define s3y 54
 #endif
 
 #ifdef font12
-#define sfx 1
-#define s0x 18
-#define s1x 30
-#define s2x 42
-#define s3x 54
+#define sfy 1
+#define s0y 18
+#define s1y 30
+#define s2y 42
+#define s3y 54
 #endif
 
 SSD1306  display(0x3c, 5, 4);
@@ -44,11 +44,11 @@ void initOled(void){
 void wrds(void)
   {
    display.clear();  
-   display.drawString(1, 1, fStr);
-   display.drawString(1, 18, ds[0]);
-   display.drawString(1, 30, ds[1]);
-   display.drawString(1, 42, ds[2]);
-   display.drawString(1, 54, ds[3]);
+   display.drawString(1, sfy, fStr);
+   display.drawString(1, s0y, ds[0]);
+   display.drawString(1, s1y, ds[1]);
+   display.drawString(1, s2y, ds[2]);
+   display.drawString(1, s3y, ds[3]);
    display.display(); 
   }
 void addds(String qq){
