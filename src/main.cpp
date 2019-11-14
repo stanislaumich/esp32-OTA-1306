@@ -29,7 +29,7 @@ void setup(void) {
   beep(200,2000);
   initOled();
   FS_init();
-  addds("Start");
+  addds("Starting :-)");
   Serial.begin(115200);
   Serial.println();
   Serial.println("Starting :-)");  
@@ -38,15 +38,6 @@ void setup(void) {
 
 void loop(void) {  
   server.handleClient();
-  /*
-  curm=millis();
-  if (curm-prevm>interval){
-   char cstr[16];
-   sprintf(cstr, "%010d", curm);
-   prevm=curm;  
-  }
-  */
-  //delay(1);
   clok();
   if (millis()>screencur+screentimeout){
    screenoff();
