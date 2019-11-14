@@ -32,10 +32,6 @@ void DisplayTime(void) {
   uint16_t h = ( ntp_time / 3600 ) % 24;
   int th = prefs.getInt("alarm_h", 0);
   int tm = prefs.getInt("alarm_m", 0);  
-  /*Serial.write(th);
-  Serial.write(h);
-  Serial.write(tm);
-  Serial.write(m);*/
   if (th == h && tm == m ) {
     addds("ALARMA!!!!");
     Serial.write("ALARMA!!!!");
