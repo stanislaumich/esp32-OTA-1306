@@ -103,42 +103,32 @@ void handleFileCreate() {
  }
 
 
-void handleFileList() {
-  addds("File list");
-  String dirname ="\/";
-  //int levels = 2;
+void handleFileList() {  
+  if (!server.hasArg("dir")) {
+    server.send(500, "text/plain", "BAD ARGS");
+    return;
+  }
+  // https://techtutorialsx.com/2019/02/24/esp32-arduino-listing-files-in-a-spiffs-file-system-specific-path/
+  String path = server.arg("dir");
+  Dir dir = SPIFFS.openDir(path);
+  path = String();
   String output = "[";
-  output +="Listing directory: "+ dirname;
-  output +="\r\n ";
-    File root = SPIFFS.open(dirname);
-    if(!root){
-        output +="- failed to open directory";
-        return;
-    }
-    if(!root.isDirectory()){
-        output +=" - not a directory";
-        return;
-    }
-    File file = root.openNextFile();
-    while(file){
-        if(file.isDirectory()){
-            output +="  DIR : ";
-            output +=file.name();
-            /*if(levels){
-                listDir(SPIFFS, file.name(), levels -1);
-            }*/
-        } else {
-            output +="  FILE: ";
-            output +=file.name();
-            output +="\tSIZE: ";
-            output +=file.size();
-            output +="\r\n ";
-        }
-        file = root.openNextFile();
-    }
+  while (dir.next()) {
+    File entry = dir.openFile("r");
+    if (output != "[") output += ',';
+    bool isDir = false;
+    output += "{\"type\":\"";
+    output += (isDir) ? "dir" : "file";
+    output += "\",\"name\":\"";
+    output += String(entry.name()).substring(1);
+    output += "\"}";
+    entry.close();
+  }
   output += "]";  
- server.send(200, "text/json", output);  
- }
+  server.send(200, "text/json", output);
+}
+
+
 
 String millis2time(){
   String Time="";
@@ -247,6 +237,10 @@ void initWebServer(void){
   server.on("/Time", HTTP_GET, handle_Time);
   server.on("/Button", handle_Button);
   server.on("/beep",handlebeep);
+  //загрузка редактора editor
+  server.on("/edit", HTTP_GET, []() {
+    if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
+  });
   //Создание файла
   server.on("/edit", HTTP_PUT, handleFileCreate);
   //Удаление файла
