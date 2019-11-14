@@ -32,7 +32,7 @@ SSD1306  display(0x3c, 5, 4);
 String ds[4];
 String mIP;
 String fStr;
-unsigned long screentimeout=10000;
+unsigned long screentimeout=3000;
 unsigned long screencur;
 
 void screenoff(void){

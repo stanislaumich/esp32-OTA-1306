@@ -188,14 +188,7 @@ String XmlTime(void) {
 void handlebeep(void){
   int t1 = server.arg("t1").toInt();
   int t2 = server.arg("t2").toInt();
-  unsigned long h;
-  h=millis();
-  while (millis()-h<t1){
-  digitalWrite(0,HIGH);
-  delayMicroseconds(t2);
-  digitalWrite(0,LOW);
-  delayMicroseconds(t2);
- }
+  beep(t1,t2);
   server.sendHeader("Connection", "close");
   server.send(200, "text/plain", "Ok beep "); 
  }  
@@ -277,6 +270,7 @@ void initWebServer(void){
       if (upload.status == UPLOAD_FILE_START) {
         Serial.setDebugOutput(true);
         Serial.printf("Update: %s\n", upload.filename.c_str());
+        beep(200,50);
         fStr="UPDATING.....";
         addds(upload.filename.c_str());
         addds("");

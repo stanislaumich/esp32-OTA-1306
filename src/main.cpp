@@ -30,6 +30,9 @@ unsigned long int tm;
 int interval=1000;
 
 void setup(void) {
+  Button_init();
+  beep(200,2000);
+
   initOled();
   FS_init();
   addds("Start");
@@ -75,27 +78,21 @@ void setup(void) {
     addds("Starting UDP");
     udp.begin(localPort);
     addds("UDP started.");
+    beep(200,1000);
    }
    else{
      clrscr();
      fStr="ERROR";
      addds("WiFi Failed.");
-   }
-//0 +
- //12 -
- pinMode(0,OUTPUT);
- pinMode(12,OUTPUT);
- digitalWrite(12,LOW);
- digitalWrite(0,LOW);
- unsigned long h;
- h=millis();
- while (millis()-h<200){
- digitalWrite(0,HIGH);
- delay(2);
- digitalWrite(0,LOW);
- delay(2);
- }
-
+     beep(200,1000);
+     delay(200);
+     beep(200,1000);
+     delay(200);
+     beep(200,1000);
+     delay(200);
+    }
+   
+ 
  }
 
 void loop(void) {  

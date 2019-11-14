@@ -6,24 +6,24 @@
 int XMLb0;
 int XMLb1;
 int XMLb2;
-
+#define pinp 14
+#define pinn 15
 void beep(int t1,int t2){
  unsigned long h;
   h=millis();
   while (millis()-h<t1){
-  digitalWrite(0,HIGH);
-  delayMicroseconds(t2);
-  digitalWrite(0,LOW);
-  delayMicroseconds(t2);
+   digitalWrite(pinp,HIGH);
+   delayMicroseconds(t2);
+   digitalWrite(pinp,LOW);
+   delayMicroseconds(t2);
+  }
  }
 
-}
-
-void Button_init(){
-  
-  /*pinMode(rele1, OUTPUT);
-  pinMode(rele2, OUTPUT);
-  pinMode(rele3, OUTPUT);*/
+void Button_init(void){
+  pinMode(pinp,OUTPUT);
+  pinMode(pinn,OUTPUT);
+  digitalWrite(pinp,LOW);
+  digitalWrite(pinn,LOW); 
  }
 void Button(int state){
  switch (state) {
@@ -50,4 +50,4 @@ void Button(int state){
       break;
   }
 
-} 
+ } 
