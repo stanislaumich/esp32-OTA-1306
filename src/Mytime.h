@@ -24,8 +24,6 @@ const char* ntpServerName = "time.nist.gov";
 const int NTP_PACKET_SIZE = 48; 
 byte packetBuffer[NTP_PACKET_SIZE]; 
 WiFiUDP udp;
-
-
   // Каждые 0.5 секунды выдаем время
 void DisplayTime(void) {
   uint16_t m = ( ntp_time / 60 ) % 60;
@@ -58,10 +56,10 @@ void DisplayTime(void) {
 unsigned long sendNTPpacket(IPAddress& address) {
   Serial.println("sending NTP packet...");
   memset(packetBuffer, 0, NTP_PACKET_SIZE);
-  packetBuffer[0] = 0b11100011;   // LI, Version, Mode
-  packetBuffer[1] = 0;     // Stratum, or type of clock
-  packetBuffer[2] = 6;     // Polling Interval
-  packetBuffer[3] = 0xEC;  // Peer Clock Precision
+  packetBuffer[0] = 0b11100011;   
+  packetBuffer[1] = 0;     
+  packetBuffer[2] = 6;     
+  packetBuffer[3] = 0xEC;  
   packetBuffer[12]  = 49;
   packetBuffer[13]  = 0x4E;
   packetBuffer[14]  = 49;
@@ -76,7 +74,6 @@ bool GetNTP(void) {
   WiFi.hostByName(ntpServerName, timeServerIP);
   sendNTPpacket(timeServerIP);
   delay(1000);
-
   int cb = udp.parsePacket();
   if (!cb) {
     Serial.println("No packet yet");
@@ -85,10 +82,7 @@ bool GetNTP(void) {
   else {
     Serial.print("packet received, length=");
     Serial.println(cb);
-    // Читаем пакет в буфер
     udp.read(packetBuffer, NTP_PACKET_SIZE);
-    // 4 байта начиная с 40-го сождержат таймстамп времени - число секунд
-    // от 01.01.1900
     unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
     unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
     // Конвертируем два слова в переменную long
@@ -98,8 +92,8 @@ bool GetNTP(void) {
     unsigned long epoch = secsSince1900 - seventyYears;
     // Делаем поправку на местную тайм-зону
     ntp_time = epoch + TIMEZONE * 3600;
-    Serial.print("Unix time = ");
-    Serial.println(ntp_time);
+    //Serial.print("Unix time = ");
+    //Serial.println(ntp_time);
   }
   return true;
  }
