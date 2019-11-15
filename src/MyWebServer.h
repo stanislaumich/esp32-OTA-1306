@@ -58,6 +58,7 @@ bool handleFileRead(String path) {
  }
 
 void handleFileUpload() {
+  addds("Upload file");
   if (server.uri() != "/edit") return;
   HTTPUpload& upload = server.upload();
   if (upload.status == UPLOAD_FILE_START) {
@@ -76,6 +77,7 @@ void handleFileUpload() {
  }
 
 void handleFileDelete() {
+  addds("Delete file");
   if (server.args() == 0) return server.send(500, "text/plain", "BAD ARGS");
   String path = server.arg(0);
   if (path == "/")
@@ -87,6 +89,7 @@ void handleFileDelete() {
   path = String();
  }
 void handleFileCreate() {
+  addds("Create file");
   if (server.args() == 0)
     return server.send(500, "text/plain", "BAD ARGS");
   String path = server.arg(0);
@@ -127,7 +130,7 @@ void handleFileList() {
   }
   output += "]";  
   server.send(200, "text/json", output);
-}
+ }
 
 
 
