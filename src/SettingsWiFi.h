@@ -70,18 +70,18 @@ void WiFiInit(void){
     mIP=mIP+String(myIP[1])+String(".");
     mIP=mIP+String(myIP[2])+String(".");
     mIP=mIP+String(myIP[3]);
-    fStr=mIP+" "+getSsidPass("SSID");
+    fStr1=mIP;//+" "+getSsidPass("SSID");
     initWebServer();
     addds("Connected.");
     Serial.println("Ready! Open http://192.168.1.233 in your browser");
-    addds("Starting UDP");
+    //addds("Starting UDP");
     udp.begin(localPort);
-    addds("UDP started.");
+    //addds("UDP started.");
     beep(200,1000);
    }
    else{
      clrscr();
-     fStr="ERROR";
+     fStr1="ERROR";
      addds("WiFi Failed :-(");
      beep(200,1000);
      delay(200);

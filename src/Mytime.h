@@ -16,7 +16,11 @@ bool          points   = true;
 unsigned int err_count = 0;
 int gh;
 int gm;
+char* wd[7]={"SU","MO","TU","WE","TH","FR","SA"};
+int weekday;
+
 #define TIMEZONE 3
+
 
 Preferences prefs;
 IPAddress timeServerIP; 
@@ -28,6 +32,7 @@ WiFiUDP udp;
 void DisplayTime(void) {
   uint16_t m = ( ntp_time / 60 ) % 60;
   uint16_t h = ( ntp_time / 3600 ) % 24;
+  
   int th = prefs.getInt("alarm_h", 0);
   int tm = prefs.getInt("alarm_m", 0);  
   if (th == h && tm == m ) {
@@ -44,7 +49,8 @@ void DisplayTime(void) {
     String Time ="";
     if (h<10){Time+= "0"+(String)h+":";}else{Time+= (String)h+":";}
     if (m<10){Time+= "0"+(String)m;}else{Time+= (String)m;} 
-    addds(Time);    
+    timestr=Time+(String)" "+(String)wd[weekday];
+    addds(timestr);    
     }
   if ((m==0)&&(gh!=h)){beep(150,125);}  
   gh=h;
@@ -93,6 +99,7 @@ bool GetNTP(void) {
     unsigned long epoch = secsSince1900 - seventyYears;
     // Делаем поправку на местную тайм-зону
     ntp_time = epoch + TIMEZONE * 3600;
+    weekday=(epoch/60/60/24+4)%7; // day week, 0-sunday
     //Serial.print("Unix time = ");
     //Serial.println(ntp_time);
   }

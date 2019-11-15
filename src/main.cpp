@@ -34,12 +34,14 @@ void setup(void) {
   Serial.println();
   Serial.println("Starting :-)");  
   WiFiInit();
+  screentimeout=60000;
  }
 
 void loop(void) {  
   server.handleClient();
   clok();
   if (millis()>screencur+screentimeout){
+   screentimeout=screentimeoutr; 
    screenoff();
   }
 }

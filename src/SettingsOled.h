@@ -5,7 +5,10 @@
 #include "font_orbitum_10.h"
 #ifndef Common
  #include "common.h"
-#endif 
+#endif
+/*#ifndef MyTime
+ #include "Mytime.h"
+#endif*/  
 #define OLED_SDA    5  // pin 14
 #define OLED_SDC    4  // pin 12
 #define OLED_ADDR   0x3C
@@ -31,7 +34,10 @@
 SSD1306  display(0x3c, 5, 4);
 String ds[4];
 String mIP;
+String fStr1;
+String timestr;
 String fStr;
+unsigned long screentimeoutr=3000;
 unsigned long screentimeout=3000;
 unsigned long screencur;
 
@@ -50,7 +56,8 @@ void initOled(void){
 
 void wrds(void){
    screenon();
-   display.clear();  
+   display.clear();
+   fStr=fStr1+(String)" "+timestr;  
    display.drawString(1, sfy, fStr);
    display.drawString(1, s0y, ds[0]);
    display.drawString(1, s1y, ds[1]);

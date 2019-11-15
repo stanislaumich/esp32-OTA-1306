@@ -233,6 +233,13 @@ void handlereboot(){
   server.send(200,"text/html",s);
   ESP.restart();
  }
+void handleShowTime(void){
+  screentimeout=60000;
+  String s="Long time ago...";
+  addds(s);
+  server.sendHeader("Connection", "close");
+  server.send(200,"text/html",s);
+ }
 void initWebServer(void){
   addds("initWebServer");
   server.on("/reboot",handlereboot);
@@ -241,6 +248,7 @@ void initWebServer(void){
   server.on("/Time", HTTP_GET, handle_Time);
   server.on("/Button", handle_Button);
   server.on("/beep",handlebeep);
+  server.on("/time",handleShowTime);
   server.on("/edit", HTTP_GET, []() {
     if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
   });
