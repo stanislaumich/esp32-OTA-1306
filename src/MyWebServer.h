@@ -241,7 +241,6 @@ void initWebServer(void){
   server.on("/Time", HTTP_GET, handle_Time);
   server.on("/Button", handle_Button);
   server.on("/beep",handlebeep);
-  //загрузка редактора editor
   server.on("/edit", HTTP_GET, []() {
     if (!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
   });
@@ -252,6 +251,7 @@ void initWebServer(void){
   //first callback is called after the request has ended with all parsed arguments
   //second callback handles file uploads at that location
   server.on("/edit", HTTP_POST, []() {
+    server.sendHeader("Connection", "close");//my
     server.send(200, "text/plain", "");
   }, handleFileUpload);
    /////////////////////
