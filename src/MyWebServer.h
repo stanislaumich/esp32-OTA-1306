@@ -234,7 +234,7 @@ void handlereboot(){
   ESP.restart();
  }
 void handleShowTime(void){
-  screentimeout=60000;
+  screentimeout=50000;
   String s="Long time ago...";
   addds(s);
   server.sendHeader("Connection", "close");
