@@ -34,7 +34,7 @@ void setup(void) {
   Serial.println();
   Serial.println("Starting :-)");  
   WiFiInit();
-  screentimeout=60000;
+  screentimeout=50000;
  }
 
 void loop(void) {  
