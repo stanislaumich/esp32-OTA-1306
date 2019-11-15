@@ -2,6 +2,7 @@
 #include <WebServer.h>
 #include <Update.h>
 #include "SPIFFS.h"
+#include "FS.h"
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
@@ -9,7 +10,7 @@
 #ifndef Common
  #include "common.h"
 #endif 
-
+//#define FS_NO_GLOBALS
 WebServer server(80);
 File fsUploadFile;
 String XML;
@@ -110,11 +111,11 @@ void handleFileList() {
   }
   // https://techtutorialsx.com/2019/02/24/esp32-arduino-listing-files-in-a-spiffs-file-system-specific-path/
   String path = server.arg("dir");
-  Dir dir = SPIFFS.openDir(path);
+  File dir = SPIFFS.open(path);
   path = String();
   String output = "[";
-  while (dir.next()) {
-    File entry = dir.openFile("r");
+  while (File entry=dir.openNextFile()) {
+    //File entry = dir.openNextFile();
     if (output != "[") output += ',';
     bool isDir = false;
     output += "{\"type\":\"";
