@@ -106,7 +106,7 @@ bool GetNTP(void) {
     unsigned long epoch = secsSince1900 - seventyYears;
     // Делаем поправку на местную тайм-зону
     ntp_time = epoch + TIMEZONE * 3600;
-    weekday=(epoch/60/60/24+TIMEZONE)%7; // day week, 0-sunday
+    weekday=(epoch/60/60/24+4)%7; // day week, 0-sunday
     //Serial.print("Unix time = ");
     //Serial.println(ntp_time);
   }
