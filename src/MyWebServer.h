@@ -216,13 +216,13 @@ void buildXML(){
     XML+=XmlTime();
     XML+="</time>";
     XML+="<b0>";
-    XML+=XMLb0;
+    XML+=arrBut[0];
     XML+="</b0>";
     XML+="<b1>";
-    XML+=XMLb1;
+    XML+=arrBut[1];
     XML+="</b1>";
     XML+="<b2>";
-    XML+=XMLb2;
+    XML+=arrBut[2];
     XML+="</b2>";
   XML+="</Donnees>"; 
  }

@@ -6,10 +6,7 @@
 #include <Preferences.h>
 
 Preferences prefs;
-
-int XMLb0;
-int XMLb1;
-int XMLb2;
+int arrBut[3]={0,0,0};
 
 #define pinp 14
 #define pinn 15
@@ -29,34 +26,16 @@ void Button_init(void){
   pinMode(pinp,OUTPUT);
   pinMode(pinn,OUTPUT);
   digitalWrite(pinp,LOW);
-  digitalWrite(pinn,LOW); 
+  digitalWrite(pinn,LOW);
+  prefs.begin("button");
+  int z =prefs.getBytes("button",arrBut,sizeof(arrBut)); 
  }
 void Button(int state){
- switch (state) {
-    case 2:
-      //digitalWrite(rele1, HIGH);
-      //digitalWrite(rele2, LOW);
-      //digitalWrite(rele3, HIGH);
-      addds("State 2 switched");
-      XMLb2?XMLb2=0:XMLb2=1;
-      break;
-    case 1:
-      //digitalWrite(rele1, LOW);
-      //digitalWrite(rele2, HIGH);
-      //digitalWrite(rele3, HIGH);
-      addds("State 1 switched");
-      XMLb1?XMLb1=0:XMLb1=1;
-      break;
-    case 0:
-      //digitalWrite(rele1, HIGH);
-      //digitalWrite(rele2, HIGH);
-      //digitalWrite(rele3, HIGH);
-      addds("State 0 switched");
-      XMLb0?XMLb0=0:XMLb0=1;
-      break;
-  }
-
+  arrBut[state]?arrBut[state]=0:arrBut[state]=1;
+  addds("State "+String(arrBut[state])+" switched");
+  prefs.putBytes("buttons",arrBut,sizeof(arrBut));
  }
+
 String getValue(String data, char separator, int index){
   // String part01 = getValue(application_command,';',0); 
   int found = 0;
@@ -73,18 +52,8 @@ String getValue(String data, char separator, int index){
  }  
 
 int getButton(int b){
-  switch(b){
-   case 0: return 0;
-     break;
-   case 1: return 1;
-     break;
-   case 2: return 2;
-     break;    
-   default: break;
-   }  
-
-  return 0;//EEPROM.read(10+b);
-  }
+  return arrBut[b];
+ }
 
 
 int getBud(int p){
