@@ -19,7 +19,7 @@ int gh;
 int gm;
 char* wd[7]={"SU","MO","TU","WE","TH","FR","SA"};
 int weekday;
-
+bool z=true;
 #define TIMEZONE 3
 
 
@@ -35,7 +35,10 @@ void DisplayTime(void) {
   uint16_t h = ( ntp_time / 3600 ) % 24;
   
   int th = prefs.getInt("alarm_h", 0);
-  int tm = prefs.getInt("alarm_m", 0);  
+  int tm = prefs.getInt("alarm_m", 0);
+  if (th==0&&tm==0){
+
+  } else { 
   if (th == h && tm == m ) {
     addds("ALARMA!!!!");
     Serial.write("ALARMA!!!!");
@@ -45,7 +48,8 @@ void DisplayTime(void) {
     delay(300);
     beep(200,250);
     delay(300);
-  }
+   }
+  } 
   if (gm!=m){
     String Time ="";
     if (h<10){Time+= "0"+(String)h+":";}else{Time+= (String)h+":";}
@@ -53,7 +57,10 @@ void DisplayTime(void) {
     timestr=Time+(String)" "+(String)wd[weekday];
     addds(timestr);    
     }
-  if ((m==0)&&(gh!=h)){beep(150,125);}  
+
+ 
+  if ((m==0)&&(gh!=h)){beep(150,125);z=true;} 
+  if ((m==30)&&(z)){beep(150,5);z=false;} 
   gh=h;
   gm=m;
   
