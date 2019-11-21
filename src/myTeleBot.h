@@ -11,9 +11,9 @@
 #include "UniversalTelegramBot.h"
 #define myTele "357390016"
 
-#define BOTtoken "947749033:AAF00_fgJ0JTYF2XsZE_0zbz-8aZwtdHb-M"
-//#define BOTname "Lz42-8266"
-//#define BOTusername "Lz428266Bot"
+#define BOTtoken "852912728:AAFxGJGyirIIE4vMMrWXwW1l0M2N6Ubigq0"
+//#define BOTname "Lz42Esp32Clock"
+//#define BOTusername "Lz42Esp32ClockBot"
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client); 
@@ -62,7 +62,7 @@ void handleNewMessages(int numNewMessages) {
       String sh = getValue(text,' ',1);
       String sm = getValue(text,' ',2);
       setBud(sh.toInt(),sm.toInt());
-      mess+="Установлено";
+      mess+="Установлен будильник";
       }
       bot.sendMessage(chat_id, from_name+", "+mess, "");
     }
