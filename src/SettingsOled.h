@@ -3,7 +3,7 @@
 #include "SSD1306.h"
 // #include "font_orbitum_10.h"  // очень красиво
 #include "font_orbitum_10.h"
-#ifndef Common
+#ifndef common
  #include "common.h"
 #endif
 /*#ifndef MyTime

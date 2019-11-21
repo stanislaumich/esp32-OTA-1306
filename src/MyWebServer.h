@@ -6,8 +6,10 @@
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
-#include "MyTime.h"
-#ifndef Common
+#ifndef MyTime
+ #include "MyTime.h"
+#endif 
+#ifndef common
  #include "common.h"
 #endif 
 //#define FS_NO_GLOBALS

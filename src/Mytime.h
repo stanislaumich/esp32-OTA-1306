@@ -1,7 +1,8 @@
+#ifndef MyTime
 #define MyTime
-#include "WiFiClient.h"
+#include <WiFiClientSecure.h>
 #include <Preferences.h>
-#ifndef Common
+#ifndef common
  #include "common.h"
 #endif 
 
@@ -127,3 +128,4 @@ void clok() {
     points = !points;
    }  
  }
+ #endif

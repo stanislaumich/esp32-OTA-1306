@@ -1,11 +1,11 @@
 /*To upload through terminal you can use: curl -F "image=@firmware.bin" esp8266-webupdate.local/update*/
 #include <Arduino.h>
 #include <WiFi.h>
-#include <WiFiClient.h>
+#include <WiFiClientSecure.h>
 #include <WebServer.h>
 #include <Update.h>
 #include <FS.h>
-#ifndef Common
+#ifndef common
  #include "common.h"
 #endif
 #ifndef SettingsWiFi
@@ -20,9 +20,10 @@
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
- 
+#ifndef myTeleBot
+  #include "myTeleBot.h"
+ #endif 
 
-//int interval=1000;
 
 void setup(void) {
   Button_init();
@@ -37,7 +38,8 @@ void setup(void) {
   screentimeout=50000;
  }
 
-void loop(void) {  
+void loop(void) { 
+  goBot(); 
   server.handleClient();
   clok();
   if (millis()>screencur+screentimeout){

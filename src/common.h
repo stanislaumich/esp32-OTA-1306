@@ -1,4 +1,5 @@
-#define Common
+#ifndef common
+#define common
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
@@ -6,8 +7,10 @@
 int XMLb0;
 int XMLb1;
 int XMLb2;
+
 #define pinp 14
 #define pinn 15
+
 void beep(int t1,int t2){
  unsigned long h;
   h=millis();
@@ -50,4 +53,35 @@ void Button(int state){
       break;
   }
 
+ }
+String getValue(String data, char separator, int index){
+  // String part01 = getValue(application_command,';',0); 
+  int found = 0;
+  int strIndex[] = {0, -1};
+  int maxIndex = data.length()-1;
+  for(int i=0; i<=maxIndex && found<=index; i++){
+    if(data.charAt(i)==separator || i==maxIndex){
+        found++;
+        strIndex[0] = strIndex[1]+1;
+        strIndex[1] = (i == maxIndex) ? i+1 : i;
+    }
+  }
+  return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
+ }  
+
+int getButton(int b){
+  return 0;//EEPROM.read(10+b);
+  }
+
+
+int getBud(int p){
+  return 0;//EEPROM.read(p);
+ }
+
+void setBud(int ph,int pm){
+  //EEPROM.write(0,ph);
+  //EEPROM.write(1,pm);
+  //EEPROM.commit();
  } 
+
+#endif  

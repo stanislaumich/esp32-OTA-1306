@@ -1,7 +1,7 @@
 #define SettingsWiFi
 #include <WiFi.h>
-#include <WiFiClient.h>
-#ifndef Common
+#include <WiFiClientSecure.h>
+#ifndef common
  #include "common.h"
 #endif
 #include <esp_wifi.h> 
