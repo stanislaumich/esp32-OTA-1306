@@ -23,7 +23,7 @@ bool z=true;
 #define TIMEZONE 3
 
 
-Preferences prefs;
+
 IPAddress timeServerIP; 
 const char* ntpServerName = "time.nist.gov";
 const int NTP_PACKET_SIZE = 48; 

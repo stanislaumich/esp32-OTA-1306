@@ -3,6 +3,9 @@
 #ifndef SettingsOled
  #include "SettingsOled.h"
 #endif
+#include <Preferences.h>
+
+Preferences prefs;
 
 int XMLb0;
 int XMLb1;
@@ -70,18 +73,32 @@ String getValue(String data, char separator, int index){
  }  
 
 int getButton(int b){
+  switch(b){
+   case 0: return 0;
+     break;
+   case 1: return 1;
+     break;
+   case 2: return 2;
+     break;    
+   default: break;
+   }  
+
   return 0;//EEPROM.read(10+b);
   }
 
 
 int getBud(int p){
-  return 0;//EEPROM.read(p);
+  if (p==0){   
+   return prefs.getInt("alarm_h", 0);
+  }
+  if (p==1){
+   return prefs.getInt("alarm_m",0);
+  }
  }
 
 void setBud(int ph,int pm){
-  //EEPROM.write(0,ph);
-  //EEPROM.write(1,pm);
-  //EEPROM.commit();
+  size_t q1 = prefs.putInt("alarm_h", ph);
+  size_t q2 = prefs.putInt("alarm_m", pm);
  } 
 
 #endif  

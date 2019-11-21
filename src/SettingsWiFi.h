@@ -90,7 +90,4 @@ void WiFiInit(void){
      beep(200,1000);
      delay(200);
     }
-   
- 
-
  }
