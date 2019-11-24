@@ -13,12 +13,14 @@ int arrBut[3]={0,0,0};
 
 void beep(int t1,int t2){
  unsigned long h;
+  if(myON){
   h=millis();
   while (millis()-h<t1){
    digitalWrite(pinp,HIGH);
    delayMicroseconds(t2);
    digitalWrite(pinp,LOW);
    delayMicroseconds(t2);
+  }
   }
  }
 

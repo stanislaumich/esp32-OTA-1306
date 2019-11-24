@@ -45,6 +45,7 @@ String getSsidPass( String s ){
 
 void WiFiInit(void){
   WiFi.mode(WIFI_AP_STA);
+  WiFi.softAP("ESP32-1306-Clock");
   WiFi.config(ip, gateway, subnet, dns1, dns2);
   WiFi.begin(ssid1, password1);
   addds((String)"Conn to "+(String)ssid1);

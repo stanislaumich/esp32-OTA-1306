@@ -79,9 +79,19 @@ void handleNewMessages(int numNewMessages) {
       mess+="Bu 2 - "+String(getButton(2))+"\n";
       bot.sendMessage(chat_id, from_name+",\n"+mess, "");
     }
-
+     
+    if (text == "/on") {
+      String mess="I am ON";
+      myON=true;
+      bot.sendMessage(chat_id, from_name+",\n"+mess, "");
+    }
+    if (text == "/off") {
+      String mess="I am OFF";
+      myON=false;
+      bot.sendMessage(chat_id, from_name+",\n"+mess, "");
+    } 
     if (text == "/start") {
-      String welcome = "Arduino 8266 UNO Bot, " + from_name + ".\n";
+      String welcome = "ESP32 Home 1306 Clock Bot, " + from_name + ".\n";
       welcome += "/b1 : to switch the button N\n";
       welcome += "/beep : to beep\n";
       welcome += "/bud ? : to see ringer\n";

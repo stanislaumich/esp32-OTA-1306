@@ -37,6 +37,7 @@ String mIP;
 String fStr1;
 String timestr;
 String fStr;
+bool myON;
 unsigned long screentimeoutr=3000;
 unsigned long screentimeout=3000;
 unsigned long screencur;
@@ -52,10 +53,11 @@ void initOled(void){
   //display.flipScreenVertically();
   //display.setFont(ArialMT_Plain_10);
   display.setFont(Orbitron_Medium_10);
+  myON=true;
   }
 
 void wrds(void){
-   screenon();
+   if (myON) {screenon();}
    display.clear();
    fStr=fStr1+(String)" "+timestr;  
    display.drawString(1, sfy, fStr);
