@@ -3,7 +3,10 @@
 #include "SSD1306.h"
 // #include "font_orbitum_10.h"  // очень красиво
 #include "font_orbitum_18.h"
+#include "font_orbitum_20.h"
 #include "font_orbitum_10.h"
+#define FONTBIG Orbitron_Medium_20
+#define FONTSMALL Orbitron_Medium_10
 #ifndef common
  #include "common.h"
 #endif
@@ -49,11 +52,12 @@ void screenoff(void){
 void screenon(void){
   display.displayOn();
  } 
+
 void initOled(void){
   display.init();
   //display.flipScreenVertically();
   //display.setFont(ArialMT_Plain_10);
-  display.setFont(Orbitron_Medium_18);
+  //display.setFont(FONTBIG);
   myON=true;
   }
 String formfirst(void){
@@ -66,7 +70,7 @@ void wrds(int type){
    display.clear();
    //fStr=formfirst();
    if (type==1){
-   display.setFont(Orbitron_Medium_10);
+   display.setFont(FONTSMALL);
    display.setTextAlignment(TEXT_ALIGN_LEFT);  
    display.drawString(1, sfy, formfirst());
    display.drawString(1, s0y, ds[0]);
@@ -76,10 +80,9 @@ void wrds(int type){
 
    }
    if (type==0){
-    display.setFont(Orbitron_Medium_18);
+    display.setFont(FONTBIG);
     display.setTextAlignment(TEXT_ALIGN_CENTER);
     display.drawString(64, 23, formfirst());
-
    }
 
    display.display();
