@@ -71,7 +71,8 @@ void WiFiInit(void){
     mIP=mIP+String(myIP[1])+String(".");
     mIP=mIP+String(myIP[2])+String(".");
     mIP=mIP+String(myIP[3]);
-    fStr1=mIP;//+" "+getSsidPass("SSID");
+    fStr1="";
+    //wfStr1=mIP;//+" "+getSsidPass("SSID");
     initWebServer();
     addds("Connected.");
     Serial.println("Ready! Open http://192.168.1.233 in your browser");
