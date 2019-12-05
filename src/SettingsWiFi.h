@@ -45,6 +45,7 @@ String getSsidPass( String s ){
 
 void WiFiInit(void){
   WiFi.mode(WIFI_AP_STA);
+  WiFi.softAP("ESP32-1306-Clock");
   WiFi.config(ip, gateway, subnet, dns1, dns2);
   WiFi.begin(ssid1, password1);
   addds((String)"Conn to "+(String)ssid1);
@@ -70,7 +71,8 @@ void WiFiInit(void){
     mIP=mIP+String(myIP[1])+String(".");
     mIP=mIP+String(myIP[2])+String(".");
     mIP=mIP+String(myIP[3]);
-    fStr1=mIP;//+" "+getSsidPass("SSID");
+    fStr1="";
+    //wfStr1=mIP;//+" "+getSsidPass("SSID");
     initWebServer();
     addds("Connected.");
     Serial.println("Ready! Open http://192.168.1.233 in your browser");

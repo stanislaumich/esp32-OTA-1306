@@ -55,7 +55,8 @@ void DisplayTime(void) {
     if (h<10){Time+= "0"+(String)h+":";}else{Time+= (String)h+":";}
     if (m<10){Time+= "0"+(String)m;}else{Time+= (String)m;} 
     timestr=Time+(String)" "+(String)wd[weekday];
-    addds(timestr);    
+    //addds(timestr);
+    wrds(0);    
     }
 
  
