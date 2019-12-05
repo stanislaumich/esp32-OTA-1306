@@ -38,17 +38,17 @@ void handleNewMessages(int numNewMessages) {
 
     if (text == "/b0") {
       Button(0);
-      bot.sendMessage(chat_id, "Button 0", "");
+      bot.sendMessage(chat_id, "+Button 0", "");
     }
 
     if (text == "/b1") {
       Button(1);
-      bot.sendMessage(chat_id, "Button 1", "");
+      bot.sendMessage(chat_id, "+Button 1", "");
     }
 
     if (text == "/b2") {
       Button(2);
-      bot.sendMessage(chat_id, "Button 2", "");
+      bot.sendMessage(chat_id, "+Button 2", "");
     }
 
     if (text.indexOf("/bud")==0) {
@@ -62,22 +62,22 @@ void handleNewMessages(int numNewMessages) {
       String sh = getValue(text,' ',1);
       String sm = getValue(text,' ',2);
       setBud(sh.toInt(),sm.toInt());
-      mess+="Установлен будильник";
+      mess+="+Установлен будильник";
       }
-      bot.sendMessage(chat_id, from_name+", "+mess, "");
+      bot.sendMessage(chat_id, +mess, "");
     }
 
     if (text == "/beep") {
       beep(250,125);
-      bot.sendMessage(chat_id, from_name+", I'm beeping, "/*+chat_id*/, "");
+      bot.sendMessage(chat_id, "+I'm beeping", "");
     }
 
     if (text == "/status") {
       String mess="";
-      mess+="Bu 0 - "+String(getButton(0))+"\n";
-      mess+="Bu 1 - "+String(getButton(1))+"\n";
-      mess+="Bu 2 - "+String(getButton(2))+"\n";
-      bot.sendMessage(chat_id, from_name+",\n"+mess, "");
+      mess+="+Bu 0 - "+String(getButton(0))+"\n";
+      mess+="+Bu 1 - "+String(getButton(1))+"\n";
+      mess+="+Bu 2 - "+String(getButton(2))+"\n";
+      bot.sendMessage(chat_id, mess, "");
     }
 
     if (text == "/start") {
