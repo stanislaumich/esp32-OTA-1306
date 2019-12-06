@@ -64,7 +64,7 @@ void handleNewMessages(int numNewMessages) {
       setBud(sh.toInt(),sm.toInt());
       mess+="+Установлен будильник";
       }
-      bot.sendMessage(chat_id, +mess, "");
+      bot.sendMessage(chat_id, mess, "");
     }
 
     if (text == "/beep") {
@@ -83,16 +83,23 @@ void handleNewMessages(int numNewMessages) {
     if (text == "/on") {
       String mess="I am ON";
       myON=true;
-      bot.sendMessage(chat_id, from_name+",\n"+mess, "");
+      bot.sendMessage(chat_id, mess, "");
     }
+    if (text == "/u") {
+      String mess="Uptime: "+millis2time();      
+      bot.sendMessage(chat_id, mess, "");
+    } 
+
+    millis2time();
     if (text == "/off") {
       String mess="I am OFF";
       myON=false;
-      bot.sendMessage(chat_id, from_name+",\n"+mess, "");
+      bot.sendMessage(chat_id, mess, "");
     } 
     if (text == "/start") {
       String welcome = "ESP32 Home 1306 Clock Bot, " + from_name + ".\n";
       welcome += "/b1 : to switch the button N\n";
+      welcome += "/u : Uptime\n";
       welcome += "/beep : to beep\n";
       welcome += "/bud ? : to see ringer\n";
       welcome += "/bud 18 00 : to set ringer\n";
