@@ -5,6 +5,12 @@
 #endif
 #include <Preferences.h>
 
+String Esp32Clock="Lz42Esp32Clock";
+String Lz428266="Lz42-8266";
+String S868 ="519049530";
+String myID="852912728";
+String myName="Lz42Esp32Clock";
+
 Preferences prefs;
 int arrBut[3]={0,0,0};
 
@@ -52,6 +58,8 @@ String getValue(String data, char separator, int index){
   }
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
  }  
+
+
 
 int getButton(int b){
   return arrBut[b];

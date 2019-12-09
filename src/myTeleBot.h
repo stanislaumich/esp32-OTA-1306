@@ -25,6 +25,22 @@ bool Start = false;
 const int ledPin = 13;
 int ledStatus = 0; 
 
+String sendtobot(String ch_id, String mess){
+  String m="="+ch_id+"="+/*myID*/myName+"="+mess;
+  bot.sendMessage(S868, m, "");
+  return m;
+}
+
+void parsebot(String chat_id, String text){
+      String sa1 = getValue(text,' ',1);
+      String sa2 = getValue(text,' ',2);
+      String sa3 = getValue(text,' ',3);
+      String sa4 = getValue(text,' ',4);      
+      String w=sa1+' '+sa2+' '+sa3+' '+sa4;
+      bot.sendMessage(chat_id, "+Sending!\n"+sendtobot(Esp32Clock,w), "");
+ }
+
+
 void handleNewMessages(int numNewMessages) {
   Serial.println("handleNewMessages");
   Serial.println(String(numNewMessages));
